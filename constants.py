@@ -1,0 +1,2 @@
+DEFAULT_FOLDER = "drop"
+EST_HOURS_OFFSET = -5
