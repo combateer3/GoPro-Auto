@@ -18,16 +18,17 @@ def main(argv):
     if not dest_dir:
         print("An invalid destination directory was provided!")
 
-    # set given directory
-    os.chdir(source_dir)
-    # get file statistics
-    result = os.stat("R:\GoPro Auto\drop\GX010126.mp4")
-    print(result)
-    # creates a datetime object for EST
-    modified = datetime.fromtimestamp(result.st_mtime, tz=timezone(timedelta(hours=EST_HOURS_OFFSET)))
+    # get all video files
+    video_files = file_utils.get_source_files(source_dir)
+
+    # extract datetime data from files
+    stats = []
+    for file in video_files:
+        file_data = os.stat(os.path.join(source_dir, file))
+        stats.append(datetime.fromtimestamp(file_data.st_mtime, tz=timezone(timedelta(hours=EST_HOURS_OFFSET))))
 
     # create file structure
-    file_utils.generate_file_structure(modified, dest_dir)
+    file_utils.generate_file_structure(stats, dest_dir)
 
 
 if __name__ == "__main__":
